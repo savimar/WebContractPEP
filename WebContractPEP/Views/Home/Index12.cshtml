@@ -1,0 +1,25 @@
+﻿@{
+    ViewBag.Title = "Загрузить договор договора";
+    Layout = "../Shared/_Layout.cshtml";
+}
+
+<main>
+    <section class="row" aria-labelledby="aspnetTitle">
+        <h3>Загрузить договор договора</h3>
+    </section>
+
+    <div class="row">
+        <section class="col-md-4" aria-labelledby="gettingStartedTitle">
+            <h3>Выберите Word файл для загрузки</h3>
+            
+            @using (Html.BeginForm("Upload", "ContractTemplates", FormMethod.Post, new { enctype = "multipart/form-data" }))
+            {
+                <input type="file" name="upload" /><br>
+               
+                <input type="submit" value="Загрузить" />
+            }
+           
+            
+        </section>
+    </div>
+</main>
