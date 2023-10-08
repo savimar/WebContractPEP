@@ -28,7 +28,8 @@ namespace WebContractPEP
             bundles.Add(new StyleBundle("~/Content/css").Include(
                 "~/Content/bootstrap.css",
                 "~/Content/Site.css",
-                "~/Content/css/font-awesome.css"));
+                "~/Content/css/font-awesome.css," +
+                "~/Scripts/summernote/summernote.css"));
 
 
             bundles.Add(new ScriptBundle("~/bundle/base").Include(
@@ -36,15 +37,26 @@ namespace WebContractPEP
                 "~/Scripts/bootstrap.js"
             ));
 /*
-            bundles.Add(new ScriptBundle("~/bundle/summernote-lite.js").Include(
-                "~/Content/summernote-lite.js"
-            ));
+            bundles.Add(new ScriptBundle("~/bundle/summernote").Include(
+                "~/Scripts/summernote/summernote.js"
 
-            bundles.Add(new StyleBundle("~/Scripts/summernote-lite.css").Include(
-                "~/Content/summernote-lite.css"
-            ));
-        }
-*/
+            ));*/
+            /*
+                        bundles.Add(new ScriptBundle("~/bundle/summernote/summernote.").Include(
+                            "~/Content/summernote/summernote.js"
+                        ));
+            */
+
+            /*
+                        bundles.Add(new ScriptBundle("~/bundle/summernote/summernote.js").Include(
+                            "~/Content/summernote.js"
+                        ));
+
+                        bundles.Add(new StyleBundle("~/Scripts/summernote-lite.css").Include(
+                            "~/Content/summernote-lite.css"
+                        ));
+                    }
+            */
         }
     }
 

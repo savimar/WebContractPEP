@@ -1,4 +1,4 @@
-﻿@using TXTextControl.Web.MVC
+﻿
 @{
     ViewBag.Title = "Index";
     Layout = "../Shared/_Layout.cshtml";
@@ -6,12 +6,11 @@
 
 @model WebContractPEP.Models.ContractTemplate
 @section head{
-
+   
+   
 
 }
-@{
-    var sDocument = "<html><body><p>Welcome to <strong>Text Control</strong></p></body></html>";
-}
+
 <div class="panel panel-primary"></div>
 <div class="panel-heading panel-head">Add Content</div>
 <div class="panel-body"></div>
@@ -25,25 +24,15 @@
             </div>
         </div>
         <div class="form-group">
-            @Html.LabelFor(model => model.FinalText, new { @class = "col-lg-2 control-label" })
-            <div class="col-lg-9">
-                @Html.TextAreaFor(model => model.FinalText, new { @class = "form-control", @row = 5 })
-            </div>
-            @Html.TXTextControl().TextControl(settings => {
-                                                              settings.UserNames = new string[] { "Tim Typer" };
-            }).LoadText(sDocument, TXTextControl.Web.StringStreamType.HTMLFormat).Render()
-
-            <input type="button" onclick="insertTable()" value="Insert Table" />
-            <div class="form-group">
-                <div class="col-lg-9"></div>
-                <div class="col-lg-3">
+           
+            <div class="col-lg-3">
                     <button class="btn btn-success" id="btnSubmit" type="submit">
                         Подписать и отправить
                     </button>
                 </div>
             </div>
         </div>
-    </div>
+   
 
 
 
@@ -51,12 +40,11 @@
 
 
         @Scripts.Render(
-            "~/bundles/jqueryval",
+            "~/bundles/jqueryval");
 
-                "~/Scripts/wysiwyg.js");
         @Styles.Render(
-            "~/Content/css"
-            );
+            "~/Content/css");
+
 
     }
 }
