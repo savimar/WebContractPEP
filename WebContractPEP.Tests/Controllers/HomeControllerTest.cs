@@ -1,10 +1,5 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Web.Mvc;
-using WebContractPEP;
 using WebContractPEP.Controllers;
 
 namespace WebContractPEP.Tests.Controllers

@@ -174,11 +174,13 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Controllers\ContractTemplatesController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\Contract.cs" />
+    <Compile Include="Models\ContractContext.cs" />
     <Compile Include="Models\ContractTemplate.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -317,8 +319,13 @@
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Home\About.cshtml" />
     <Content Include="Views\Home\Contact.cshtml" />
-    <Content Include="Views\Home\Index12.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Views\Home\Inde15x.cshtml" />
+    <Content Include="Views\ContractTemplates\Create.cshtml" />
+    <Content Include="Views\ContractTemplates\Delete.cshtml" />
+    <Content Include="Views\ContractTemplates\Details.cshtml" />
+    <Content Include="Views\ContractTemplates\Edit.cshtml" />
+    <Content Include="Views\ContractTemplates\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
