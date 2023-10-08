@@ -18,3 +18,11 @@ select,
 textarea {
     max-width: 280px;
 }
+@font-face {
+    font-family: 'summernote';
+    src: url('../Content/summernote/font/summernote.ttf') format('truetype'), url('../Content/summernote/font/summernote.woff') format('woff'), url('../Content/summernote/font/summernote.eot') format('embedded-opentype');
+}
+
+body {
+    font-family: 'summernote', sans-serif;
+}

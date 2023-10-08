@@ -36,11 +36,17 @@ namespace WebContractPEP
                 "~/Scripts/jquery-{version}",
                 "~/Scripts/bootstrap.js"
             ));
-/*
-            bundles.Add(new ScriptBundle("~/bundle/summernote").Include(
-                "~/Scripts/summernote/summernote.js"
+            bundles.Add(new StyleBundle("~/fonts/summernote").Include(
+                "~/Content/summernote/summernote.ttf",
+                "~/Content/summernote/summernote.woff",
+                "~/Content/summernote/summernote.woff2",
+                 "~/Content/summernote/summernote.eot"
+            ));
+            /*
+                        bundles.Add(new ScriptBundle("~/bundle/summernote").Include(
+                            "~/Scripts/summernote/summernote.js"
 
-            ));*/
+                        ));*/
             /*
                         bundles.Add(new ScriptBundle("~/bundle/summernote/summernote.").Include(
                             "~/Content/summernote/summernote.js"

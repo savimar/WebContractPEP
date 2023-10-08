@@ -9,9 +9,14 @@
 
 <link rel="stylesheet" type="text/css" href="~/Scripts/codemirror.css">
 <link rel="stylesheet" type="text/css" href="~/Scripts/monokai.css">
+<link rel="stylesheet" type="text/css" href="~/Content/bootstrap.css">
+<link href="~/Content/summernote/font/summernote" rel="stylesheet" />
+
 <script type="text/javascript" src="~/Scripts/codemirror.js"></script>
 <script type="text/javascript" src="~/Scripts/xml.js"></script>
 <script type="text/javascript" src="~/Scripts/formatting.js"></script>
+<script type="text/javascript" src="~/Scripts/bootstrap.js"></script>
+
 
 <link href="~/Scripts/summernote/summernote.css" rel="stylesheet" />
 <script src="~/Scripts/summernote/summernote.js"></script>
@@ -23,16 +28,20 @@
                 FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
             {@Html.AntiForgeryToken() <i class="fa fa-link" aria-hidden="true"> </i><a href="http://summernote.org/"></a><hr />
             <div class="form-group">
-               
-          
-                <div id="summernote"><p></p></div>
-               
-            </div>
-                <div class="col-lg-3">
-                    <button class="btn btn-success" id="btnSubmit" type="submit">
-                        Подписать и отправить
-                    </button>
+
+
+                <div id="summernote">
+                    <p>
+
+                    </p>
                 </div>
+
+            </div>
+            <div class="col-lg-3">
+                <button class="btn btn-success" id="btnSubmit" type="submit">
+                    Подписать и отправить
+                </button>
+            </div>
         }
         </section>
     </div>
@@ -40,8 +49,8 @@
 @section Scripts {
 
     <script type="module">
-       
-       
+
+
         $(document).ready(function () {
             $('#summernote').summernote({
                 height: 300,                 // set editor height
@@ -50,7 +59,7 @@
                 lang: 'ru-RU',// set maximum height of editor
                 placeholder: 'Hello',
                 focus: true,
-                        codemirror: {
+                codemirror: {
                     theme: 'monokai',
                     mode: "text/html",
                     lineNumbers: true,
