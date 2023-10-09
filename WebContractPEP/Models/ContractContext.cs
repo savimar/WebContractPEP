@@ -22,6 +22,11 @@ namespace WebContractPEP.Models
 
     public class ContractContext : DbContext
     {
+        public ContractContext() : base("Server=localhost;port=5432;Database=ContractDB;User Id=postgres;Password=root;")
+        {
+            Database.SetInitializer<ContractContext>(new DropCreateDatabaseAlways<ContractContext>());
+
+        }
         public DbSet<Contract> Contracts { get; set; }
         public DbSet<ContractTemplate> Templates { get; set; }
 
@@ -31,4 +36,5 @@ namespace WebContractPEP.Models
 
         }
     }
+
 }

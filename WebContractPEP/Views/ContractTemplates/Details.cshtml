@@ -1,12 +1,25 @@
-﻿@model WebContractPEP.Models.ContractTemplate
+﻿@using Newtonsoft.Json
+@using WebGrease.Css.Extensions
+@model WebContractPEP.Models.ContractTemplate
 
 @{
     ViewBag.Title = "Details";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Details</h2>
 
+<link rel="stylesheet" type="text/css" href="~/Scripts/codemirror.css">
+<link rel="stylesheet" type="text/css" href="~/Scripts/monokai.css">
+<link rel="stylesheet" type="text/css" href="~/Content/bootstrap.css">
+<link href="~/Content/summernote/font/summernote" rel="stylesheet" />
+
+<script type="text/javascript" src="~/Scripts/codemirror.js"></script>
+<script type="text/javascript" src="~/Scripts/xml.js"></script>
+<script type="text/javascript" src="~/Scripts/formatting.js"></script>
+<script type="text/javascript" src="~/Scripts/bootstrap.js"></script>
+
+<link href="~/Scripts/summernote/summernote.css" rel="stylesheet" />
+<script src="~/Scripts/summernote/summernote.js"></script>
 <div>
     <h4>ContractTemplate</h4>
     <hr />
@@ -29,7 +42,62 @@
 
     </dl>
 </div>
+
+<div class="row">
+    <div class="col-md-12">
+        <section id="loginForm">
+            @using (Html.BeginForm("Index", "Home", new { ReturnUrl = ViewBag.ReturnUrl },
+                FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+            {@Html.AntiForgeryToken() <i class="fa fa-link" aria-hidden="true"> </i><a href="http://summernote.org/"></a><hr />
+            <div class="form-group">
+
+
+                <div id="summernote" contenteditable="true">
+                   
+
+                </div>
+
+            </div>
+            <div class="col-lg-3">
+                <button class="btn btn-success" id="btnSubmit" type="submit">
+                    Подписать и отправить
+                </button>
+            </div>
+        }
+        </section>
+    </div>
+</div>
 <p>
     @Html.ActionLink("Edit", "Edit", new { id = Model.ContactTemplateId }) |
     @Html.ActionLink("Back to List", "Index")
 </p>
+@section Scripts {
+
+    <script type="module">
+
+
+        $(document).ready(function () {
+            /**/
+           
+            $('#summernote').summernote({
+            /**/
+            height: 1000,                 // set editor height
+            minHeight: null,             // set minimum height of editor
+            maxHeight: null,
+                lang: 'ru-RU',  
+            fontNames: ['Arial', 'Times New Roman', 'Helvetica'],
+           
+                focus: true,
+                placeholder: 'Введите данные',
+              codemirror: {
+            theme: 'monokai',
+            mode: "text/html",
+            lineNumbers: true,
+            tabMode: 'indent'
+        }
+            } );
+        });
+       
+    </script>
+
+}

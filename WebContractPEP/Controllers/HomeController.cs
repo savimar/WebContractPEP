@@ -3,6 +3,7 @@ using System.IO;
 using System.Web;
 using System.Web.Mvc;
 using System.Xml.Linq;
+using Microsoft.Office.Interop.Word;
 using WebContractPEP.Models;
 
 
@@ -10,7 +11,7 @@ namespace WebContractPEP.Controllers
 {
     public class HomeController : Controller
     {
-
+        private ContractContext db = new ContractContext();
         /*   [HttpGet]
            public ActionResult Index()
            {
@@ -70,20 +71,18 @@ namespace WebContractPEP.Controllers
                 applicationclass.Documents.Open(ref fileSavePath);
                 applicationclass.Visible = false;
                 Document document = applicationclass.ActiveDocument;
-
+                List<string> strinList = new List<string>();
 
                 for (int i = 1; i <= document.Words.Count; i++)
                 {
-                    Sample sample = new Sample();
-                    sample.ContractTemplate = template;
-                    sample.Name = "samle" + i;
-                    sample.Text = document.Words[i].Text;
-                    sampleList.Add(sample);
+                    
+                  
+                    strinList.Add(document.Words[i].Text);
 
                 }
-                template.Samples = sampleList;
+              
                 template.Name = fileName;
-
+                template.FinalText = strinList;
 
                 document.Close();
                 //Delete the Uploaded Word File.
@@ -95,7 +94,7 @@ namespace WebContractPEP.Controllers
             {
                 return RedirectToAction("View", "ContractTemplates", ViewBag); // нет файла для загрузки, обработать //ToDo
             }
-            db.ContractTemplates.Add(template);
+            db.Templates.Add(template);
             db.SaveChanges();
             long id = template.ContactTemplateId;
             ViewData["id"] = id;
