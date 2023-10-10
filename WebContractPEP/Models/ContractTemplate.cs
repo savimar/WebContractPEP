@@ -12,6 +12,6 @@ namespace WebContractPEP.Models
         public long ContactTemplateId { get; set; }
         public bool IsActive { get; set; } = true;
         public string Name { get; set; }
-        public ICollection<string> FinalText { get; set; } = new List<string>();
+        public string FinalText { get; set; }
     }
 }

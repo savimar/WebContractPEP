@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DocumentFormat.OpenXml.Packaging;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
@@ -6,11 +7,14 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Mime;
+using System.Text;
 using System.Web;
 using System.Web.Mvc;
 using System.Xml.Linq;
-using Microsoft.Office.Interop.Word;
+using DocumentFormat.OpenXml;
+using DocumentFormat.OpenXml.Wordprocessing;
 using WebContractPEP.Models;
+using DocumentFormat.OpenXml.Vml.Office;
 
 
 namespace WebContractPEP.Controllers
@@ -131,9 +135,9 @@ namespace WebContractPEP.Controllers
             }
 
             string path = string.Empty;
-            object fileSavePath = null;
+            string fileSavePath = null;
             ContractTemplate template = new ContractTemplate();
-            List<string> sampleList = new List<string>();
+             string FinalText = string.Empty;
             if (upload != null)
             {
                 string fileName = System.IO.Path.GetFileName(upload.FileName);
@@ -143,23 +147,26 @@ namespace WebContractPEP.Controllers
                 upload.InputStream.Close();
 
 
-                _Application applicationclass = new Application();
-                applicationclass.Documents.Open(ref fileSavePath);
-                applicationclass.Visible = false;
-                Document document = applicationclass.ActiveDocument;
-
-
-                for (int i = 1; i <= document.Words.Count; i++)
+                Body body = null;
+                MainDocumentPart mainPart = null;
+                using (var wordDocument = WordprocessingDocument.Open(fileSavePath as string, false))
                 {
-                    sampleList.Add(document.Words[i].Text);
-
+                    mainPart = wordDocument.MainDocumentPart;
+                    body = wordDocument.MainDocumentPart.Document.Body;
+                    if (body != null)
+                    {
+                        FinalText = ConvertWordToHTML(body, mainPart);
+                    }
+                   
                 }
-               
+
+              
+
                 template.Name = fileName;
-                template.FinalText = sampleList;
+                template.FinalText = FinalText;
 
 
-                document.Close();
+               
                 //Delete the Uploaded Word File.
 
                 // ViewBag.template = template;
@@ -172,12 +179,116 @@ namespace WebContractPEP.Controllers
             db.Templates.Add(template);
             db.SaveChanges();
             long id = template.ContactTemplateId;
-            ViewData["id"] = id;
+            //TempData["text"] = FinalText;
+           /* ViewData["id"] = id;
             ViewBag.id = id;
             TempData["id"] = id;
             HttpContext.Session["id"] = id;
             ViewBag.message = id;
-            return RedirectToAction("Details", "ContractTemplates", new { id });
+           */
+            return RedirectToAction("Details", "ContractTemplates",new { id });
+        }
+        private string ConvertWordToHTML(Body content, MainDocumentPart wDoc)
+        {
+            string htmlConvertedString = string.Empty;
+            foreach (Paragraph par in content.Descendants<Paragraph>())
+            {
+                foreach (Run run in par.Descendants<Run>())
+                {
+                    RunProperties props = run.RunProperties;
+                    htmlConvertedString += ApplyTextFormatting(run.InnerText, props);
+                }
+            }
+            return htmlConvertedString;
+        }
+        private string ApplyTextFormatting(string content, RunProperties property)
+        {
+            StringBuilder buildString = new StringBuilder(content);
+
+            if (property?.Bold != null)
+            {
+                buildString.Insert(0, "<b>");
+                buildString.Append("</b>");
+            }
+
+            if (property?.Italic != null)
+            {
+                buildString.Insert(0, "<i>");
+                buildString.Append("</i>");
+            }
+
+            if (property?.Underline != null)
+            {
+                buildString.Insert(0, "<u>");
+                buildString.Append("</u>");
+            }
+
+            if (property?.Color != null && property.Color.Val != null)
+            {
+                buildString.Insert(0, "<span style=\"color: #" + property.Color.Val + "\">");
+                buildString.Append("</span>");
+            }
+
+            if (property?.Highlight != null && property.Highlight.Val != null)
+            {
+                buildString.Insert(0, "<span style=\"background-color: " + property.Highlight.Val + "\">");
+                buildString.Append("</span>");
+            }
+
+            if (property?.Strike != null)
+            {
+                buildString.Insert(0, "<s>");
+                buildString.Append("</s>");
+            }
+
+            return buildString.ToString();
+
+        }
+        public string GetPlainText(OpenXmlElement element)
+        {
+            StringBuilder PlainTextInWord = new StringBuilder();
+            foreach (OpenXmlElement section in element.Elements())
+            {
+                switch (section.LocalName)
+                {
+                    // Space 
+                    case " ":
+                        PlainTextInWord.Append("\u0020");
+                        break;
+                    // Text 
+                    case "t":
+                        PlainTextInWord.Append(section.InnerText);
+                        break;
+
+
+                    case "cr":                          // Carriage return 
+                    case "br":                          // Page break 
+                        PlainTextInWord.Append(Environment.NewLine);
+                        break;
+
+
+                    // Tab 
+                    case "tab":
+                        PlainTextInWord.Append("\t");
+                        break;
+
+
+                    // Paragraph 
+                    case "p":
+                        PlainTextInWord.Append(GetPlainText(section));
+                        PlainTextInWord.AppendLine(Environment.NewLine);
+                        break;
+                    
+
+
+                    default:
+                        PlainTextInWord.Append(GetPlainText(section));
+                        break;
+                }
+            }
+
+
+            return PlainTextInWord.ToString();
         }
         protected override void Dispose(bool disposing)
         {

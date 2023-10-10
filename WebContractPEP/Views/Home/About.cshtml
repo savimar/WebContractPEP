@@ -32,7 +32,7 @@
 
                 <div id="summernote">
                     <p>
-
+                        
                     </p>
                 </div>
 
@@ -53,12 +53,13 @@
 
         $(document).ready(function () {
             $('#summernote').summernote({
-                height: 300,                 // set editor height
+                height: null,                 // set editor height
                 minHeight: null,             // set minimum height of editor
                 maxHeight: null,
                 lang: 'ru-RU',// set maximum height of editor
                 placeholder: 'Hello',
                 focus: true,
+                
                 codemirror: {
                     theme: 'monokai',
                     mode: "text/html",
