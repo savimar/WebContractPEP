@@ -21,7 +21,7 @@ namespace WebContractPEP.Models
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:dd.MM.yyyy}", ApplyFormatInEditMode = true)]
         public DateTime ContractDate { get; set; }
-
+        public byte[] ContractData { get; set; } //готовый в pdf
         public List<string> ContractTexts { get; set; } = new List<string>();
         public bool IsSigned { get; set; } = false;
     }
