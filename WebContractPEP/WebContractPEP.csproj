@@ -193,9 +193,21 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Models\Contract.cs" />
+    <Compile Include="Models\ClientModel\Address.cs" />
+    <Compile Include="Models\ClientModel\BankDetail.cs" />
+    <Compile Include="Models\ClientModel\Client.cs" />
+    <Compile Include="Models\ClientModel\CompanyModel\Company.cs" />
+    <Compile Include="Models\ClientModel\CompanyModel\IP.cs" />
+    <Compile Include="Models\ClientModel\PersonModel\OtherDocument.cs" />
+    <Compile Include="Models\ClientModel\PersonModel\Passport.cs" />
+    <Compile Include="Models\ClientModel\PersonModel\PassportRF.cs" />
+    <Compile Include="Models\ClientModel\PersonModel\Person.cs" />
+    <Compile Include="Models\ContractInitializer.cs" />
+    <Compile Include="Models\ContractModel\Contract.cs" />
     <Compile Include="Models\ContractContext.cs" />
-    <Compile Include="Models\ContractTemplate.cs" />
+    <Compile Include="Models\ContractModel\ContractTemplate.cs" />
+    <Compile Include="Models\ContractModel\FillField.cs" />
+    <Compile Include="Models\ContractTemplateDTO.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -199,11 +199,16 @@ namespace WebContractPEP.Controllers
             db.Templates.Add(template);
             db.SaveChanges();
             long id = template.ContactTemplateId;
-            //TempData["text"] = FinalText;
+
+            //fields
+            List<FillField> AutoFillFields = db.Fields.Where(f => f.Client.Id == 2).ToList(); //ToDo это автозаполняемые + получить поля этого конкретного клиента + получить номер текущего договора для этого клиента
+
+
+            TempData["fields"] = AutoFillFields;
            /* ViewData["id"] = id;
             ViewBag.id = id;
             TempData["id"] = id;
-            HttpContext.Session["id"] = id;
+            HttpContext.Session["Fields"] = id;
             ViewBag.message = id;
            */
             return RedirectToAction("Details", "ContractTemplates",new { id });

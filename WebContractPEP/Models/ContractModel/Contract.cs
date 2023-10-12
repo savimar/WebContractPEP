@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Web.Mvc;
+using WebContractPEP.Models.ClientModel;
 
 namespace WebContractPEP.Models
 {
@@ -21,8 +22,9 @@ namespace WebContractPEP.Models
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:dd.MM.yyyy}", ApplyFormatInEditMode = true)]
         public DateTime ContractDate { get; set; }
-        public byte[] ContractData { get; set; } //готовый в pdf
-        public List<string> ContractTexts { get; set; } = new List<string>();
+        public byte[] ContractData { get; set; } //готовый в pdf с подписями
+        public virtual ICollection<Client> Concluding { get; set; } = new List<Client>(); //кто заключил договор
+        public string ContractTexts { get; set; }
         public bool IsSigned { get; set; } = false;
     }
 }

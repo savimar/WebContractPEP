@@ -2,6 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Web.Mvc;
+using WebContractPEP.Models.ClientModel;
 
 namespace WebContractPEP.Models
 {
@@ -12,6 +13,7 @@ namespace WebContractPEP.Models
         public long ContactTemplateId { get; set; }
         public bool IsActive { get; set; } = true;
         public string Name { get; set; }
+        public virtual Client Client { get; set; }
         public string FinalText { get; set; }
     }
 }
