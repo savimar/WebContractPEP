@@ -29,4 +29,3 @@ namespace WebContractPEP.Models.ClientModel.PersonModel
         public Client Client { get; set; }
     }
 }
-}

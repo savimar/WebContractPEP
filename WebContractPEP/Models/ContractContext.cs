@@ -39,10 +39,10 @@ namespace WebContractPEP.Models
             modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();
             modelBuilder.Entity<Address>().HasOptional(a => a.Client).WithMany(c => c.Addresses).HasForeignKey(a => a.ClientId).WillCascadeOnDelete(true);
             modelBuilder.Entity<Client>().HasMany(c => c.BankDetails).WithOptional(b => b.Client).WillCascadeOnDelete(true);
-            modelBuilder.Entity<Client>().HasMany(c => c.Fields).WithOptional(b => b.Client).WillCascadeOnDelete(false);
+            modelBuilder.Entity<ContractTemplate>().HasMany(c => c.Fields).WithOptional(b => b.ContractTemplate).WillCascadeOnDelete(false);
             modelBuilder.Entity<Person>().HasMany(c => c.Passports).WithOptional(b => (Person)b.Client).WillCascadeOnDelete(true); ;
             modelBuilder.Entity<Client>().HasMany(c => c.ContractTemplates).WithOptional(b => b.Client).WillCascadeOnDelete(false);
-
+           
 
 
             modelBuilder.Entity<Client>().HasMany(c => c.Contracts)

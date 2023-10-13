@@ -6,6 +6,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.ComponentModel;
 
 namespace WebContractPEP.Models.ClientModel
 {
@@ -24,9 +25,9 @@ namespace WebContractPEP.Models.ClientModel
         public bool IsActive { get; set; } = true;
         public virtual Client Client { get; set; }
         public virtual long? ClientId { get; set; }
-        public string City { get; set; }      //город  
+        [DisplayName("Город")] public string City { get; set; }      //город  
         [Required(ErrorMessage = "Поле обязательно для заполнения")] public string Region { get; set; }      // область, регион
-        public string ZipCode { get; set; } //индекс
+        [DisplayName("Почтовый индекс")] public string ZipCode { get; set; } //индекс
         public string Country { get; set; } //страна
         public string CountryId { get; set; } = "643"; //код страны Россия
         public string Area { get; set; } //район
@@ -42,6 +43,7 @@ namespace WebContractPEP.Models.ClientModel
         public AddressType AddressType { get; set; } // юридический, прописки, проживания, местоположения. фактический
 
         [Required(ErrorMessage = "Поле обязательно для заполнения")]
+        [DisplayName("Адрес")]
         public string FullAddress
         {
             get

@@ -17,6 +17,8 @@ using WebContractPEP.Models;
 using DocumentFormat.OpenXml.Vml.Office;
 using OpenXmlPowerTools;
 using System.Web.UI.HtmlControls;
+using Microsoft.Office.Interop.Word;
+using WebContractPEP.Models.ClientModel;
 
 
 namespace WebContractPEP.Controllers
@@ -126,7 +128,7 @@ namespace WebContractPEP.Controllers
             return RedirectToAction("Index");
         }
         [HttpPost]
-        public ActionResult Upload(HttpPostedFileBase upload)
+        public ActionResult Upload(HttpPostedFileBase upload, List<FillField> autoFillFields)
         {
             string folder = "~/Files/";
             if (!Directory.Exists(Server.MapPath(folder)))
@@ -196,15 +198,37 @@ namespace WebContractPEP.Controllers
             {
                 return RedirectToAction("View", "ContractTemplates", ViewBag); // нет файла для загрузки, обработать //ToDo
             }
+            List<FillField> AutoFillFields = db.Fields.Where(f => f.IsAutoFillField == true).ToList(); //ToDo это автозаполняемые + получить поля этого конкретного клиента + получить номер текущего договора для этого клиента
+           AutoFillFields.Add(
+           
+               new FillField
+               {
+                   ContractTemplate = template, FieldName = "Номер договора",
+                   FieldType = FieldType.String, IsAutoFillField = true,
+                   AutoFillFieldType = AutoFillFieldType.ContractNumber
+
+               });
+
+           AutoFillFields.Add(
+
+               new FillField
+               {
+                   ContractTemplate = template, FillFieldId = 5, FieldName = "Дата договора",
+                   FieldType = FieldType.Date, AutoFieldValue = DateTime.Now.ToString("dd.MM.yyyy"), IsAutoFillField = true,
+                   AutoFillFieldType = AutoFillFieldType.ContractDate
+
+               });
+      
+
+          
+           template.Fields = AutoFillFields;
             db.Templates.Add(template);
             db.SaveChanges();
             long id = template.ContactTemplateId;
 
             //fields
-            List<FillField> AutoFillFields = db.Fields.Where(f => f.Client.Id == 2).ToList(); //ToDo это автозаполняемые + получить поля этого конкретного клиента + получить номер текущего договора для этого клиента
-
-
-            TempData["fields"] = AutoFillFields;
+           
+           // TempData["fields"] = AutoFillFields;
            /* ViewData["id"] = id;
             ViewBag.id = id;
             TempData["id"] = id;
@@ -213,7 +237,16 @@ namespace WebContractPEP.Controllers
            */
             return RedirectToAction("Details", "ContractTemplates",new { id });
         }
-       
+
+        private long GetContactNumber(long clientId)
+        {
+            var result = 2;
+                /*db.Contracts
+                .Where(dc => dc.Concluding.Where(c => c.Id == clientId))
+                .GroupBy(f => f.ContractId).First();
+*/
+            return result+1;
+        }
         protected override void Dispose(bool disposing)
         {
             if (disposing)
@@ -221,6 +254,11 @@ namespace WebContractPEP.Controllers
                 db.Dispose();
             }
             base.Dispose(disposing);
+        }
+
+        public ActionResult FillField()
+        {
+            throw new NotImplementedException();
         }
     }
 }

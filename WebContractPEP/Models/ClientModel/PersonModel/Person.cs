@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
@@ -8,11 +9,11 @@ namespace WebContractPEP.Models.ClientModel.PersonModel
 {
     public class Person : Client
     {
-        [Required(ErrorMessage = "Имя обязательно для заполнения")] public string FirstName { get; set; } //Имя об
+        [Required(ErrorMessage = "Имя обязательно для заполнения")][DisplayName("Имя")]/*[UIHint("String")] */public string FirstName { get; set; } //Имя об
         public string MiddleName { get; set; }   //Отчетсво
-        [Required(ErrorMessage = "Фамилия обязательна для заполнения")] public string LastName { get; set; } //Фамилия об
+        [Required(ErrorMessage = "Фамилия обязательна для заполнения")][DisplayName("Фамилия")] public string LastName { get; set; } //Фамилия об
         [Required(ErrorMessage = "Дата рождения обязательна для заполнения")]
-        [DataType(DataType.Date)][DisplayFormat(DataFormatString = "{0:dd.MM.yyyy}", ApplyFormatInEditMode = true)] public DateTime? BirthDate { get; set; }   //Дата рождения 
+        [DataType(DataType.Date)][DisplayFormat(DataFormatString = "{0:dd.MM.yyyy}", ApplyFormatInEditMode = true)][DisplayName("Дата рождения")] public DateTime? BirthDate { get; set; }   //Дата рождения 
         public string SNILS { get; set; } //снилс
         public bool IsResidentialAddressEqualRegistrationAddress { get; set; } = false; //Адрес регистрации совпадает с адрем проживания
         public virtual ICollection<Passport> Passports { get; set; } = new List<Passport>(); //документ

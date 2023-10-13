@@ -207,7 +207,6 @@
     <Compile Include="Models\ContractContext.cs" />
     <Compile Include="Models\ContractModel\ContractTemplate.cs" />
     <Compile Include="Models\ContractModel\FillField.cs" />
-    <Compile Include="Models\ContractTemplateDTO.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

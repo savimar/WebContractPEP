@@ -15,5 +15,7 @@ namespace WebContractPEP.Models
         public string Name { get; set; }
         public virtual Client Client { get; set; }
         public string FinalText { get; set; }
+        public virtual ICollection<FillField> Fields { get; set; } =
+            new List<FillField>(); //список полей шаблона
     }
 }

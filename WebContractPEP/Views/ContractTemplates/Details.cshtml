@@ -1,4 +1,7 @@
-﻿@using Newtonsoft.Json
+﻿@using DocumentFormat.OpenXml.EMMA
+@using Microsoft.Ajax.Utilities
+@using Newtonsoft.Json
+@using WebContractPEP.Models
 @using WebGrease.Css.Extensions
 @model WebContractPEP.Models.ContractTemplate
 
@@ -24,14 +27,7 @@
     <h4>ContractTemplate</h4>
     <hr />
     <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.IsActive)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.IsActive)
-        </dd>
-
+        
         <dt>
             @Html.DisplayNameFor(model => model.Name)
         </dt>
@@ -70,9 +66,50 @@
         }
         </section>
     </div>
-    <div class=  "col-xs-12 col-sm-12 col-md-12 col-lg-4 col-xl-4 col-xxl-4 " id = "fieldConteyiner">
-       @var fields =  @TempData["fields"]
- </div>
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-4 col-xl-4 col-xxl-4 " id="fieldConteyiner">
+        @foreach (FillField field in Model.Fields)
+        {
+<section id="fieldBlock">
+    @using (Html.BeginForm((Html.BeginForm("FillField", "ContractTemplates", FormMethod.Post))))
+    {
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-4 col-xl-4 col-xxl-4 " id="field">
+            @Html.Hidden("FieldId")
+            @Html.Label(field.FieldName)
+            @Html.Label("{{" + field.FieldName + "}}")
+            @if (!field.AutoFieldValue.IsNullOrWhiteSpace())
+            {
+                @Html.Label(field.AutoFieldValue)
+            }
+            @if (field.IsFilledExecutor)
+            {
+                @Html.Label("Введите Ваше значение поля")
+                @Html.TextBox("Value")
+                @Html.Editor("FieldValue")
+
+            }
+            else if (field.IsFilledExecutor && field.IsFilledClient)
+            {
+                @Html.Label("Введите Ваше значение поля")
+                @Html.TextBox("Value")
+                @Html.Editor("FieldValue")
+            }
+            else
+            {
+
+                @Html.Label("Поле заполнит клиент")
+                @Html.TextBox("Value", null, new { @readonly = "readonly" })
+
+            }
+
+        </div>
+
+
+    }
+</section>        
+            }
+
+
+        </div>
 </div>
 <p>
     @Html.ActionLink("Edit", "Edit", new { id = Model.ContactTemplateId }) |

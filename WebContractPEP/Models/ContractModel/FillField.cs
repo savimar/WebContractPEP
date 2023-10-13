@@ -12,7 +12,9 @@ namespace WebContractPEP.Models
     public enum FieldType //
     {
         String,
-        Number
+        Number,
+        Date
+
 
     }
     public enum AutoFillFieldType
@@ -39,10 +41,11 @@ namespace WebContractPEP.Models
         public long FillFieldId { get; set; }
         public bool IsActive { get; set; } = true;
         [Required(ErrorMessage = "Поле обязательно для заполнения")] public string FieldName { get; set; }
-        [Required(ErrorMessage = "Поле обязательно для заполнения")] public string FieldValue { get; set; }
-        public virtual Client Client { get; set; }
+        public string FieldValue { get; set; }
+        public string AutoFieldValue { get; set; }
+        public virtual ContractTemplate  ContractTemplate{ get; set; }
         public FieldType FieldType { get; set; }
-        public AutoFillFieldType? AutoFillFieldType { get; set; }
+        public AutoFillFieldType? AutoFillFieldType { get; set; } // поле, заполняемое предопределённым значением
         public bool IsRequired { get; set; } = false;
         public bool IsFilledExecutor { get; set; } = false; // заполненяется исполнителем
         public bool IsFilledClient { get; set; } = false; //заполненяется клиентом

@@ -40,44 +40,7 @@ namespace WebContractPEP.Models
                 
             };
            
-            var  fields = new List<FillField>
-            {
-
-                new FillField
-                {
-                    Client = companies.FirstOrDefault(), FillFieldId = 1, FieldName = "Фамилия Имя Отчество клиента",
-                    FieldType = FieldType.String, IsAutoFillField = true, AutoFillFieldType = AutoFillFieldType.FullFIO
-                },
-                new FillField
-                {
-                    Client = companies.FirstOrDefault(), FillFieldId = 2, FieldName = "Телефон клиента",
-                    FieldType = FieldType.String, IsAutoFillField = true, AutoFillFieldType = AutoFillFieldType.Phone
-
-                },
-                new FillField
-                {
-                    Client = companies.FirstOrDefault(), FillFieldId = 3, FieldName = "E-mail клиента",
-                    FieldType = FieldType.String, IsAutoFillField = true, AutoFillFieldType = AutoFillFieldType.Email
-
-                },
-                new FillField
-                {
-                    Client = companies.FirstOrDefault(), FillFieldId = 4, FieldName = "Серия паспорта",
-                    FieldType = FieldType.String, IsAutoFillField = true, AutoFillFieldType = AutoFillFieldType.PassportSeria
-
-                },
-                new FillField
-                {
-                    Client = companies.FirstOrDefault(), FillFieldId = 5, FieldName = "Номер паспорта",
-                    FieldType = FieldType.String, IsAutoFillField = true, AutoFillFieldType = AutoFillFieldType.PassportNumber
-
-                },
-
-
-
-
-            };
-
+            
             var text = "ООО Тест, действующее на основании Устава и именуемое в дальнейшем “исполнитель”, и Тестова Теста Тестовна, именуемое в дальнейшем “Заказчик”, заключили настоящий договор о нижеследующем.";
 
            
@@ -102,6 +65,42 @@ namespace WebContractPEP.Models
                 new ContractTemplate{ Name = "часть1", Client = clients.Last(), FinalText = text},
                
             };
+            var fields = new List<FillField>
+            {
+
+                new FillField
+                {
+                    ContractTemplate = templates.FirstOrDefault(), FillFieldId = 1, FieldName = "Фамилия Имя Отчество клиента",
+                    FieldType = FieldType.String, IsAutoFillField = true, AutoFillFieldType = AutoFillFieldType.FullFIO, IsFilledExecutor = true
+                },
+                new FillField
+                {
+                    ContractTemplate = templates.FirstOrDefault(), FillFieldId = 2, FieldName = "Телефон клиента",
+                    FieldType = FieldType.String, IsAutoFillField = true, AutoFillFieldType = AutoFillFieldType.Phone, IsFilledExecutor = true
+
+                },
+                new FillField
+                {
+                    ContractTemplate = templates.FirstOrDefault(), FillFieldId = 3, FieldName = "E-mail клиента",
+                    FieldType = FieldType.String, IsAutoFillField = true, AutoFillFieldType = AutoFillFieldType.Email, IsFilledExecutor = true
+
+                },
+                new FillField
+                {
+                    ContractTemplate = templates.FirstOrDefault(), FillFieldId = 4, FieldName = "Серия паспорта",
+                    FieldType = FieldType.String, IsAutoFillField = true, AutoFillFieldType = AutoFillFieldType.PassportSeria, IsFilledExecutor = true
+
+                },
+                new FillField
+                {
+                    ContractTemplate = templates.FirstOrDefault(), FillFieldId = 5, FieldName = "Номер паспорта",
+                    FieldType = FieldType.String, IsAutoFillField = true, AutoFillFieldType = AutoFillFieldType.PassportNumber, IsFilledExecutor = true
+                },
+
+
+
+
+            };
 
             List<Contract> contracts = new List<Contract>
             {
@@ -119,5 +118,4 @@ namespace WebContractPEP.Models
             db.SaveChanges();
         }
     }
-}
 }
