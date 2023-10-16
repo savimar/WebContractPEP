@@ -50,8 +50,8 @@ namespace WebContractPEP.Models
         public bool IsFilledExecutor { get; set; } = false; // заполненяется исполнителем
         public bool IsFilledClient { get; set; } = false; //заполненяется клиентом
         public bool IsNeedSummInWords { get; set; } = false; //нужна сумма прописью
-        public bool? IsAutoFillField { get; set; } = false;
-
+        public bool? IsAutoFillField { get; set; } = false; //поле для всех клиентов?
+        
 
 
 

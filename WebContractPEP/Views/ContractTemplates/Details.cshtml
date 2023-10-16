@@ -57,27 +57,31 @@
 
 
 
-            <div class="col-lg-3">
-                <button class="btn btn-success" id="btnSubmit" type="submit">
-                    Подписать и отправить
-                </button>
-            </div>
+                <div class="col-lg-3">
+                    <button class="btn btn-save" id="btnSave" type="submit">
+                        Сохранить шаблон
+                    </button>
+                    <button class="btn btn-success" id="btnSubmit" type="submit">
+                        Подписать и отправить
+                    </button>
+                </div>
 
         }
         </section>
     </div>
     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-4 col-xl-4 col-xxl-4 " id="fieldConteyiner">
+        <button name="action" value="add">Добавить</button>
         @foreach (FillField field in Model.Fields)
         {
-            <button name="action" value="add">Добавить</button>
-            string NameField = "fieldBlock " + field.FieldName;
+
+            string NameField = field.FieldName + "Block";
             <section id=@NameField>
                 @using (Html.BeginForm((Html.BeginForm("FillField", "ContractTemplates", FormMethod.Post))))
                 {
                     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-4 col-xl-4 col-xxl-4 " id="field">
-                        @Html.Hidden("FieldId")
+                        @Html.Hidden("FieldId", field.FillFieldId)
                         @Html.Label(field.FieldName)
-                        @Html.Label("{{" + field.FieldName + "}}" , new { id = "id_field" }))
+                        @Html.Label("{{" + field.FieldName + "}}", new { id = "id_field_" })
                         @if (!field.AutoFieldValue.IsNullOrWhiteSpace())
                         {
                             @Html.Label(field.AutoFieldValue)
@@ -86,14 +90,14 @@
                         {
                             @Html.Label("Введите Ваше значение поля")
                             //@Html.TextBox("Value")
-                            @Html.Editor("FieldValue", new { id = "field_value" })
+                            @Html.Editor("FieldValue", new { id = "field_value_" })
 
                         }
                         else if (field.IsFilledExecutor && field.IsFilledClient)
                         {
                             @Html.Label("Введите Ваше значение поля")
                             //@Html.TextBox("Value")
-                            @Html.Editor("FieldValue", new { id = "field_value" })
+                            @Html.Editor("FieldValue", new { id = "field_value_" })
                         }
                         else
                         {
@@ -122,7 +126,7 @@
 </p>
 @section Scripts {
 
-    <script type="module">
+    <script >
 
 
         $(document).ready(function () {
@@ -136,6 +140,7 @@
                 lang: 'ru-RU',
                 fontNames: ['Arial', 'Times New Roman', 'Helvetica'],
                 focus: true,
+                disableDragAndDrop: true,
                 codemirror: {
                     theme: 'monokai',
                     mode: "text/html",
@@ -143,8 +148,29 @@
                     tabMode: 'indent'
                 }
             });
+            
         });
-
+     
+        $(document).ready(function(){           
+            $('#FieldValue.text-box.single-line').on('blur', '#FieldValue.text-box.single-line', field, function (event) {  
+                event.preventDefault();
+                alert(field);
+                console.log(field);
+                var value = $(this).val();
+                if (!$(this).val()) {  
+                    var oldValue = $('#id_field').val();
+                    var eventData = { myData: 'information here' };
+                        eventData = oldvalue.replace(value);
+                        $('#FinalText').summernote(event.data.myData);
+                        console.log(value);
+                        console.log(oldvalue);
+                        console.log(event.data.myData);
+                        alert(field);
+                       
+                    };
+                });
+            });
+        
     </script>
 
 }
