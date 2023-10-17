@@ -70,7 +70,14 @@
         </section>
     </div>
     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-4 col-xl-4 col-xxl-4 " id="fieldConteyiner">
-        <button name="action" value="add">Добавить</button>
+        @Html.ActionLink(
+            "Добавить",
+            "CreateWithTemplate",                     // controller action
+            "FillFields",        // controller
+            new {id= Model.ContactTemplateId },         // action parameters aka route values
+            new { @class = "btn btn-info" }) 
+        
+        
         @foreach (FillField field in Model.Fields)
         {
 
@@ -79,9 +86,9 @@
                 @using (Html.BeginForm((Html.BeginForm("FillField", "ContractTemplates", FormMethod.Post))))
                 {
                     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-4 col-xl-4 col-xxl-4 " id="field">
-                        @Html.Hidden("FieldId", field.FillFieldId)
+                        @Html.Hidden("FieldId", field.FieldId)
                         @Html.Label(field.FieldName)
-                        @Html.Label("{{" + field.FieldName + "}}", new { id = "id_field_" })
+                        @Html.Label("{{" + field.FieldName + "}}", new { id = "id_field_" + field.FieldName })
                         @if (!field.AutoFieldValue.IsNullOrWhiteSpace())
                         {
                             @Html.Label(field.AutoFieldValue)
@@ -90,20 +97,20 @@
                         {
                             @Html.Label("Введите Ваше значение поля")
                             //@Html.TextBox("Value")
-                            @Html.Editor("FieldValue", new { id = "field_value_" })
+                            @Html.Editor("FieldValue" + field.FieldId)
 
                         }
                         else if (field.IsFilledExecutor && field.IsFilledClient)
                         {
                             @Html.Label("Введите Ваше значение поля")
                             //@Html.TextBox("Value")
-                            @Html.Editor("FieldValue", new { id = "field_value_" })
+                            @Html.Editor("FieldValue" + +field.FieldId)
                         }
                         else
                         {
 
                             @Html.Label("Поле заполнит другой клиент")
-                            @Html.TextBox("Value", null, new { @readonly = "readonly" })
+                            @Html.TextBox("FieldValue" + +field.FieldId, null, new { @readonly = "readonly" })
 
                         }
                         <button name="action" value="copy">Скопировать текст в договор</button>
@@ -152,7 +159,7 @@
         });
      
         $(document).ready(function(){           
-            $('#FieldValue.text-box.single-line').on('blur', '#FieldValue.text-box.single-line', field, function (event) {  
+            $('#FieldValue.text-box.single-line').on('change', '#FieldValue.text-box.single-line', field, function (event) {  
                 event.preventDefault();
                 alert(field);
                 console.log(field);

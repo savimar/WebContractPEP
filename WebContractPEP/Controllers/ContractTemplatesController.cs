@@ -141,7 +141,7 @@ namespace WebContractPEP.Controllers
             string path = string.Empty;
             string fileSavePath = null;
             ContractTemplate template = new ContractTemplate();
-             string FinalText = string.Empty;
+             string finalText = string.Empty;
             if (upload != null)
             {
                 string fileName = System.IO.Path.GetFileName(upload.FileName);
@@ -175,7 +175,7 @@ namespace WebContractPEP.Controllers
                         var html = new XDocument(
                             new XDocumentType("html", null, null, null),
                             htmlElement);
-                        FinalText = html.ToString(SaveOptions.DisableFormatting);
+                        finalText = html.ToString(SaveOptions.DisableFormatting);
 
 
                     }
@@ -183,7 +183,7 @@ namespace WebContractPEP.Controllers
                 }
 
                 template.Name = fileName;
-                template.FinalText = FinalText;
+                template.FinalText = finalText;
 
 
 
@@ -198,30 +198,37 @@ namespace WebContractPEP.Controllers
             {
                 return RedirectToAction("View", "ContractTemplates", ViewBag); // нет файла для загрузки, обработать //ToDo
             }
-            List<FillField> AutoFillFields = db.Fields.Where(f => f.IsAutoFillField == true).ToList(); //ToDo это автозаполняемые + получить поля этого конкретного клиента + получить номер текущего договора для этого клиента
-           AutoFillFields.Add(
+            autoFillFields = db.Fields.Where(f => f.IsAutoFillField == true).ToList();
+            
+            var fillList = new List<FillField>();
+            foreach (var field in autoFillFields.ToArray())
+            {
+                fillList.Add((FillField)field.Clone());
+            }
+          
+            fillList.Add(
            
                new FillField
                {
-                   ContractTemplate = template, FieldName = "Номер договора",
-                   FieldType = FieldType.String, IsAutoFillField = true,
-                   AutoFillFieldType = AutoFillFieldType.ContractNumber
+                   ContractTemplate = template, FieldName = "Номер договора", 
+                   FieldType = FieldType.String, IsAutoFillField = false,
+                  
 
                });
 
-           AutoFillFields.Add(
+            fillList.Add(
 
                new FillField
                {
-                   ContractTemplate = template, FillFieldId = 5, FieldName = "Дата договора",
-                   FieldType = FieldType.Date, AutoFieldValue = DateTime.Now.ToString("dd.MM.yyyy"), IsAutoFillField = true,
-                   AutoFillFieldType = AutoFillFieldType.ContractDate
+                   ContractTemplate = template, FieldId = 5, FieldName = "Дата договора",
+                   FieldType = FieldType.Date, AutoFieldValue = DateTime.Now.ToString("dd.MM.yyyy"), IsAutoFillField = false,
+                   
 
                });
       
 
           
-           template.Fields = AutoFillFields;
+            template.Fields = fillList;
             db.Templates.Add(template);
             db.SaveChanges();
             long id = template.ContactTemplateId;
@@ -232,7 +239,7 @@ namespace WebContractPEP.Controllers
            /* ViewData["id"] = id;
             ViewBag.id = id;
             TempData["id"] = id;
-            HttpContext.Session["Fields"] = id;
+            HttpContext.Session["TemplatedId"] = id;
             ViewBag.message = id;
            */
             return RedirectToAction("Details", "ContractTemplates",new { id });

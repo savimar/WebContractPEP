@@ -189,6 +189,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\ContractTemplatesController.cs" />
+    <Compile Include="Controllers\FillFieldsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -351,6 +352,11 @@
     <Content Include="Views\ContractTemplates\Details.cshtml" />
     <Content Include="Views\ContractTemplates\Edit.cshtml" />
     <Content Include="Views\ContractTemplates\Index.cshtml" />
+    <Content Include="Views\FillFields\Create.cshtml" />
+    <Content Include="Views\FillFields\Delete.cshtml" />
+    <Content Include="Views\FillFields\Details.cshtml" />
+    <Content Include="Views\FillFields\Edit.cshtml" />
+    <Content Include="Views\FillFields\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

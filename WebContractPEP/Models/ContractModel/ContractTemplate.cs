@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Web.Mvc;
 using WebContractPEP.Models.ClientModel;
 
+
 namespace WebContractPEP.Models
 {
     public class ContractTemplate

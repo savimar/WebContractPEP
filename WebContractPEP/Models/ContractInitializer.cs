@@ -62,7 +62,7 @@ namespace WebContractPEP.Models
 
             List<ContractTemplate> templates = new List<ContractTemplate>
             {
-                new ContractTemplate{ Name = "часть1", Client = clients.Last(), FinalText = text},
+                new ContractTemplate{ Name = "часть1", Client = companies.FirstOrDefault(), FinalText = text},
                
             };
             var fields = new List<FillField>
@@ -70,30 +70,30 @@ namespace WebContractPEP.Models
 
                 new FillField
                 {
-                    ContractTemplate = templates.FirstOrDefault(), FillFieldId = 1, FieldName = "Фамилия Имя Отчество клиента",
+                    /*ContractTemplate = templates.FirstOrDefault(), */FieldId = 1, FieldName = "Фамилия Имя Отчество клиента",
                     FieldType = FieldType.String, IsAutoFillField = true, AutoFillFieldType = AutoFillFieldType.FullFIO, IsFilledExecutor = true
                 },
                 new FillField
                 {
-                    ContractTemplate = templates.FirstOrDefault(), FillFieldId = 2, FieldName = "Телефон клиента",
+                    /*ContractTemplate = templates.FirstOrDefault(), */ FieldId = 2, FieldName = "Телефон клиента",
                     FieldType = FieldType.String, IsAutoFillField = true, AutoFillFieldType = AutoFillFieldType.Phone, IsFilledExecutor = true
 
                 },
                 new FillField
                 {
-                    ContractTemplate = templates.FirstOrDefault(), FillFieldId = 3, FieldName = "E-mail клиента",
+                    /*ContractTemplate = templates.FirstOrDefault(), */ FieldId = 3, FieldName = "E-mail клиента",
                     FieldType = FieldType.String, IsAutoFillField = true, AutoFillFieldType = AutoFillFieldType.Email, IsFilledExecutor = true
 
                 },
                 new FillField
                 {
-                    ContractTemplate = templates.FirstOrDefault(), FillFieldId = 4, FieldName = "Серия паспорта",
+                    ContractTemplate = templates.FirstOrDefault(), FieldId = 4, FieldName = "Серия паспорта",
                     FieldType = FieldType.String, IsAutoFillField = true, AutoFillFieldType = AutoFillFieldType.PassportSeria, IsFilledExecutor = true
 
                 },
                 new FillField
                 {
-                    ContractTemplate = templates.FirstOrDefault(), FillFieldId = 5, FieldName = "Номер паспорта",
+                    ContractTemplate = templates.FirstOrDefault(), FieldId = 5, FieldName = "Номер паспорта",
                     FieldType = FieldType.String, IsAutoFillField = true, AutoFillFieldType = AutoFillFieldType.PassportNumber, IsFilledExecutor = true
                 },
 
