@@ -1,4 +1,5 @@
-﻿@{
+﻿@model IEnumerable<WebContractPEP.Models.ContractTemplate>
+@{
     ViewBag.Title = "Загрузить текст договора";
     Layout = "../Shared/_Layout.cshtml";
 }
@@ -11,15 +12,34 @@
     <div class="row">
         <section class="col-md-4" aria-labelledby="gettingStartedTitle">
             <h3>Выберите Word файл для загрузки</h3>
-            
+
             @using (Html.BeginForm("Upload", "ContractTemplates", FormMethod.Post, new { enctype = "multipart/form-data" }))
             {
                 <input type="file" name="upload" /><br>
-               
+
                 <input type="submit" value="Загрузить" />
             }
-           
-            
+
+
         </section>
     </div>
+    @if (Model != null)
+    {
+        foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.IsActive)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { id = item.ContractTemplateId }) |
+                    @Html.ActionLink("Details", "Details", new { id = item.ContractTemplateId }) |
+                    @Html.ActionLink("Delete", "Delete", new { id = item.ContractTemplateId })
+                </td>
+            </tr>
+        }
+    }
 </main>

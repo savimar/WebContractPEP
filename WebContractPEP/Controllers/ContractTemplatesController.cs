@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
+using System.Diagnostics.Eventing.Reader;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -19,6 +20,9 @@ using OpenXmlPowerTools;
 using System.Web.UI.HtmlControls;
 using Microsoft.Office.Interop.Word;
 using WebContractPEP.Models.ClientModel;
+using Antlr.Runtime.Misc;
+using DocumentFormat.OpenXml.Office2010.Excel;
+using WebContractPEP.Models.ClientModel.CompanyModel;
 
 
 namespace WebContractPEP.Controllers
@@ -59,7 +63,7 @@ namespace WebContractPEP.Controllers
         // сведения см. в разделе https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "ContactTemplateId,IsActive,Name")] ContractTemplate contractTemplate)
+        public ActionResult Create([Bind(Include = "ContractTemplateId,IsActive,Name")] ContractTemplate contractTemplate)
         {
             if (ModelState.IsValid)
             {
@@ -90,16 +94,30 @@ namespace WebContractPEP.Controllers
         // Чтобы защититься от атак чрезмерной передачи данных, включите определенные свойства, для которых следует установить привязку. Дополнительные 
         // сведения см. в разделе https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ContactTemplateId,IsActive,Name")] ContractTemplate contractTemplate)
-        {
-            if (ModelState.IsValid)
+        [ValidateInput(false)]
+        public ActionResult Edit(string action, [Bind(Include = " ContractTemplateId,IsActive,Name, FinalText")] ContractTemplate contractTemplate)
+        {//ToDo добавить поля и клиентов
+            if (action == "edit")
             {
-                db.Entry(contractTemplate).State = EntityState.Modified;
-                db.SaveChanges();
+                if (ModelState.IsValid)
+                {
+                    // UL Ul = db.CompaniesOrIPs.Find(1);//ToDo после авторизации и ЛК получить клиента из ЛК The specified cast from a materialized 'System.Data.Entity.DynamicProxies.Person_CC10FFEF508EB1335F1186AB6C3896B16DE6B5531880D5F2CFAB33B5F00A109E' type to the 'WebContractPEP.Models.ClientModel.CompanyModel.UL' type is not valid.
+                    // contractTemplate.Client = Ul;
+                    db.Entry(contractTemplate).State = EntityState.Modified;
+                    db.SaveChanges();
+                    // return RedirectToAction("Details", "ContractTemplates", new { contractTemplate.ContractTemplateId }); ;
+                    return RedirectToAction("Index");
+
+                }
                 return RedirectToAction("Index");
             }
-            return View(contractTemplate);
+            else if (action == "delete")
+            {
+                return View(contractTemplate); //ToDo обработать создание ссылки для физика
+            }
+
+
+            return View(contractTemplate); //ToDo 
         }
 
         // GET: ContractTemplates/Delete/5
@@ -127,6 +145,7 @@ namespace WebContractPEP.Controllers
             db.SaveChanges();
             return RedirectToAction("Index");
         }
+
         [HttpPost]
         public ActionResult Upload(HttpPostedFileBase upload, List<FillField> autoFillFields)
         {
@@ -141,7 +160,7 @@ namespace WebContractPEP.Controllers
             string path = string.Empty;
             string fileSavePath = null;
             ContractTemplate template = new ContractTemplate();
-             string finalText = string.Empty;
+            string finalText = string.Empty;
             if (upload != null)
             {
                 string fileName = System.IO.Path.GetFileName(upload.FileName);
@@ -155,13 +174,13 @@ namespace WebContractPEP.Controllers
 
                 FileStream fileStream =
                     new FileStream(fileSavePath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
-               
+
                 using (MemoryStream memoryStream = new MemoryStream())
                 {
                     fileStream.CopyTo(memoryStream);
                     using (var wordDocument = WordprocessingDocument.Open(memoryStream, true))
                     {
-                       
+
                         WmlToHtmlConverterSettings settings = new WmlToHtmlConverterSettings()
                         {
                             PageTitle = fileName,
@@ -196,53 +215,66 @@ namespace WebContractPEP.Controllers
             }
             else
             {
-                return RedirectToAction("View", "ContractTemplates", ViewBag); // нет файла для загрузки, обработать //ToDo
+                return RedirectToAction("View", "ContractTemplates",
+                    ViewBag); // нет файла для загрузки, обработать //ToDo
             }
-            autoFillFields = db.Fields.Where(f => f.IsAutoFillField == true).ToList();
-            
-            var fillList = new List<FillField>();
-            foreach (var field in autoFillFields.ToArray())
+
+            if (db.Fields != null)
             {
-                fillList.Add((FillField)field.Clone());
+
+                autoFillFields = db.Fields.Where(f => f.IsAutoFillField == true).ToList();
+
+                var fillList = new List<FillField>();
+                foreach (var field in autoFillFields.ToArray())
+                {
+                    fillList.Add((FillField)field.Clone());
+                }
+
+                fillList.Add(
+
+                    new FillField
+                    {
+                        ContractTemplate = template, FieldName = "Номер договора",
+                        FieldType = FieldType.String, IsAutoFillField = false,
+
+
+                    });
+
+                fillList.Add(
+
+                    new FillField
+                    {
+                        ContractTemplate = template, FieldId = 5, FieldName = "Дата договора",
+                        FieldType = FieldType.Date, AutoFieldValue = DateTime.Now.ToString("dd.MM.yyyy"),
+                        IsAutoFillField = false,
+
+
+                    });
+
+
+
+                template.Fields = fillList;
+                db.Templates.Add(template);
+                db.SaveChanges();
+                long id = template.ContractTemplateId;
+
+                //fields
+
+                // TempData["fields"] = AutoFillFields;
+                /* ViewData["id"] = id;
+                 ViewBag.id = id;
+                 TempData["id"] = id;
+                 HttpContext.Session["TemplatedId"] = id;
+                 ViewBag.message = id;
+                */
+                return RedirectToAction("Details", "ContractTemplates", new { id });
             }
-          
-            fillList.Add(
-           
-               new FillField
-               {
-                   ContractTemplate = template, FieldName = "Номер договора", 
-                   FieldType = FieldType.String, IsAutoFillField = false,
-                  
 
-               });
+            else
+            {
+                return RedirectToAction("Index", "Home");
 
-            fillList.Add(
-
-               new FillField
-               {
-                   ContractTemplate = template, FieldId = 5, FieldName = "Дата договора",
-                   FieldType = FieldType.Date, AutoFieldValue = DateTime.Now.ToString("dd.MM.yyyy"), IsAutoFillField = false,
-                   
-
-               });
-      
-
-          
-            template.Fields = fillList;
-            db.Templates.Add(template);
-            db.SaveChanges();
-            long id = template.ContactTemplateId;
-
-            //fields
-           
-           // TempData["fields"] = AutoFillFields;
-           /* ViewData["id"] = id;
-            ViewBag.id = id;
-            TempData["id"] = id;
-            HttpContext.Session["TemplatedId"] = id;
-            ViewBag.message = id;
-           */
-            return RedirectToAction("Details", "ContractTemplates",new { id });
+            }
         }
 
         private long GetContactNumber(long clientId)

@@ -14,20 +14,21 @@ namespace WebContractPEP.Models
         protected override void Seed(ContractContext db)
         {
 
+           
+            var addresses = new List<Address>
+            {
+                new Address { Street = "Тестовая улица", House = "4а", Region = "тестовый город"}
+                
+            };
             var persons = new List<Person>
             {
 
                 new Person
                 {
                     FirstName = "Тест", LastName = "Тестов", BirthDate = DateTime.Parse("1980/01/02"),
-                    ClientType = ClientType.Person, Email = "123@74.ru", Phone = "+79111111111", Id = 1
+                    Email = "123@74.ru", Phone = "+79111111111", Id = 1, Addresses = addresses
                 },
-                
-            };
-            var addresses = new List<Address>
-            {
-                new Address { Street = "Тестовая улица", House = "4а", Region = "тестовый город"}
-                
+
             };
             var companies = new List<Company>
             {
@@ -44,22 +45,7 @@ namespace WebContractPEP.Models
             var text = "ООО Тест, действующее на основании Устава и именуемое в дальнейшем “исполнитель”, и Тестова Теста Тестовна, именуемое в дальнейшем “Заказчик”, заключили настоящий договор о нижеследующем.";
 
            
-
-
-
-
-
-            List<Client> clients = new List<Client>() {  new Person
-                {
-                    FirstName = "Тест", LastName = "Тестов", BirthDate = DateTime.Parse("1980/01/02"),
-                    ClientType = ClientType.Person, Email = "123@74.ru", Phone = "+79111111111"
-                }, new Company
-                {
-                    Name = "ООО Тест", INN = "5555555555", KPP = "1111111", ClientType = ClientType.Company,
-                    Email = "823@test.ru", Phone = "+79121111111"
-
-                } };
-
+            
             List<ContractTemplate> templates = new List<ContractTemplate>
             {
                 new ContractTemplate{ Name = "часть1", Client = companies.FirstOrDefault(), FinalText = text},
@@ -70,18 +56,18 @@ namespace WebContractPEP.Models
 
                 new FillField
                 {
-                    /*ContractTemplate = templates.FirstOrDefault(), */FieldId = 1, FieldName = "Фамилия Имя Отчество клиента",
+                    ContractTemplate = templates.FirstOrDefault(), FieldId = 1, FieldName = "Фамилия Имя Отчество клиента",
                     FieldType = FieldType.String, IsAutoFillField = true, AutoFillFieldType = AutoFillFieldType.FullFIO, IsFilledExecutor = true
                 },
                 new FillField
                 {
-                    /*ContractTemplate = templates.FirstOrDefault(), */ FieldId = 2, FieldName = "Телефон клиента",
+                    ContractTemplate = templates.FirstOrDefault(),  FieldId = 2, FieldName = "Телефон клиента",
                     FieldType = FieldType.String, IsAutoFillField = true, AutoFillFieldType = AutoFillFieldType.Phone, IsFilledExecutor = true
 
                 },
                 new FillField
                 {
-                    /*ContractTemplate = templates.FirstOrDefault(), */ FieldId = 3, FieldName = "E-mail клиента",
+                    ContractTemplate = templates.FirstOrDefault(), FieldId = 3, FieldName = "E-mail клиента",
                     FieldType = FieldType.String, IsAutoFillField = true, AutoFillFieldType = AutoFillFieldType.Email, IsFilledExecutor = true
 
                 },
@@ -106,12 +92,13 @@ namespace WebContractPEP.Models
             {
                 new Contract
                 {
-                    ContractNumber = "1", Concluding = clients, ContractDate = DateTime.Now,
+                    ContractNumber = "1", ClientPerson = persons.FirstOrDefault(), Executor = companies.FirstOrDefault(),ContractDate = DateTime.Now,
                   
                    }
 
             };
-           
+            persons.ForEach(p=>db.Persons.Add(p));
+            companies.ForEach(c=>db.CompaniesOrIPs.Add(c));
             contracts.ForEach(s => db.Contracts.Add(s)); 
             templates.ForEach(t => db.Templates.Add(t));
             fields.ForEach(t => db.Fields.Add(t));

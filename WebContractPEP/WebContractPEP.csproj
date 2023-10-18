@@ -199,6 +199,7 @@
     <Compile Include="Models\ClientModel\Client.cs" />
     <Compile Include="Models\ClientModel\CompanyModel\Company.cs" />
     <Compile Include="Models\ClientModel\CompanyModel\IP.cs" />
+    <Compile Include="Models\ClientModel\CompanyModel\UL.cs" />
     <Compile Include="Models\ClientModel\PersonModel\OtherDocument.cs" />
     <Compile Include="Models\ClientModel\PersonModel\Passport.cs" />
     <Compile Include="Models\ClientModel\PersonModel\PassportRF.cs" />

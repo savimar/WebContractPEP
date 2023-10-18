@@ -17,6 +17,8 @@ namespace WebContractPEP.Models.ClientModel.PersonModel
         public string SNILS { get; set; } //снилс
         public bool IsResidentialAddressEqualRegistrationAddress { get; set; } = false; //Адрес регистрации совпадает с адрем проживания
         public virtual ICollection<Passport> Passports { get; set; } = new List<Passport>(); //документ
+
+        public virtual ICollection<Contract> Contracts { get; set; } = new List<Contract>();
         public string FullName
         {
 

@@ -24,17 +24,14 @@
 <link href="~/Scripts/summernote/summernote.css" rel="stylesheet" />
 <script src="~/Scripts/summernote/summernote.js"></script>
 <div>
-    <h4>ContractTemplate</h4>
+    <h4>Шаблон договора</h4>
     <hr />
     <dl class="dl-horizontal">
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Name)
-        </dt>
-
-        <dd>
+        
+          
             @Html.DisplayFor(model => model.Name)
-        </dd>
+        
 
     </dl>
 </div>
@@ -43,28 +40,32 @@
 
     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-8 col-xl-8 col-xxl-8">
         <section id="loginForm">
-            @using (Html.BeginForm("Index", "Home", new { ReturnUrl = ViewBag.ReturnUrl },
+            @using (Html.BeginForm("Edit", "ContractTemplates", new { ReturnUrl = ViewBag.ReturnUrl },
                 FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
             {@Html.AntiForgeryToken()
+                @Html.HiddenFor(model => model.Name)
+                @Html.HiddenFor(model => model.ContractTemplateId)
+                @Html.HiddenFor(m => m.Name)
+            @Html.HiddenFor(m => m.Fields)
+            @Html.HiddenFor(m => m.Client)
             <i class="fa fa-link" aria-hidden="true"> </i><a href="http://summernote.org/"></a><hr />
 
 
-
-            <div id="summernote" contenteditable="true"></div>
-            @Html.TextAreaFor(model => model.FinalText)
+            <div id="summernote" contenteditable="true"> </div>
+            @Html.TextAreaFor(model => model.FinalText)//,0,0, (new { id = "summernote" }, new { contenteditable = true }, new{hidden=true}))
             //Model.FinalText//TempData["text"]
 
 
 
 
-                <div class="col-lg-3">
-                    <button class="btn btn-save" id="btnSave" type="submit">
-                        Сохранить шаблон
-                    </button>
-                    <button class="btn btn-success" id="btnSubmit" type="submit">
-                        Подписать и отправить
-                    </button>
-                </div>
+            <div class="col-lg-3">
+                <button class="btn btn-save" name="action" value="edit" id="btnSave" type="submit">
+                    Сохранить шаблон
+                </button>
+                <button class="btn btn-success" id="btnSubmit" type="submit">
+                    Подписать и отправить
+                </button>
+            </div>
 
         }
         </section>
@@ -74,43 +75,41 @@
             "Добавить",
             "CreateWithTemplate",                     // controller action
             "FillFields",        // controller
-            new {id= Model.ContactTemplateId },         // action parameters aka route values
+            new {id= Model.ContractTemplateId },         // action parameters aka route values
             new { @class = "btn btn-info" }) 
         
         
         @foreach (FillField field in Model.Fields)
         {
 
-            string NameField = field.FieldName + "Block";
+            string NameField = "FillField"+field.FieldId;
             <section id=@NameField>
-                @using (Html.BeginForm((Html.BeginForm("FillField", "ContractTemplates", FormMethod.Post))))
+                @using (Html.BeginForm((Html.BeginForm("FillField", "ContractTemplates", FormMethod.Post, new{id = "form_"+field.FieldId}))))
                 {
+                     string fieldFor = "{{" + field.FieldName + "}}";
                     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-4 col-xl-4 col-xxl-4 " id="field">
                         @Html.Hidden("FieldId", field.FieldId)
                         @Html.Label(field.FieldName)
-                        @Html.Label("{{" + field.FieldName + "}}", new { id = "id_field_" + field.FieldName })
+                        @Html.Hidden("FieldName", field.FieldName)
+                        @Html.Label(fieldFor) 
+                        @Html.Hidden("FieldIdFor", fieldFor, new { @class = "id_field" + field.FieldId })
                         @if (!field.AutoFieldValue.IsNullOrWhiteSpace())
                         {
                             @Html.Label(field.AutoFieldValue)
                         }
-                        @if (field.IsFilledExecutor)
+                        @if ((field.IsFilledExecutor) || (field.IsFilledExecutor && field.IsFilledClient))
                         {
                             @Html.Label("Введите Ваше значение поля")
                             //@Html.TextBox("Value")
-                            @Html.Editor("FieldValue" + field.FieldId)
+                            @Html.TextBox("FieldValue" + field.FieldId,null, new { @class = "value_field" })
 
                         }
-                        else if (field.IsFilledExecutor && field.IsFilledClient)
-                        {
-                            @Html.Label("Введите Ваше значение поля")
-                            //@Html.TextBox("Value")
-                            @Html.Editor("FieldValue" + +field.FieldId)
-                        }
+                       
                         else
                         {
 
                             @Html.Label("Поле заполнит другой клиент")
-                            @Html.TextBox("FieldValue" + +field.FieldId, null, new { @readonly = "readonly" })
+                            @Html.TextBox("FieldValue" + +field.FieldId, null, new { @readonly = true })
 
                         }
                         <button name="action" value="copy">Скопировать текст в договор</button>
@@ -128,18 +127,15 @@
     </div>
 </div>
 <p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.ContactTemplateId }) |
+    @Html.ActionLink("Edit", "Edit", new { id = Model.ContractTemplateId }) |
     @Html.ActionLink("Back to List", "Index")
 </p>
 @section Scripts {
 
     <script >
 
-
         $(document).ready(function () {
-            /**/
-
-            $('#FinalText').summernote({
+           $('#FinalText').summernote({
                 /**/
                 height: 1000,                 // set editor height
                 minHeight: null,             // set minimum height of editor
@@ -156,12 +152,13 @@
                 }
             });
             
-        });
+      
      
-        $(document).ready(function(){           
-            $('#FieldValue.text-box.single-line').on('change', '#FieldValue.text-box.single-line', field, function (event) {  
+             
+            $('.value_field').on('change', '.value_field', field, function (event) {  
                 event.preventDefault();
-                alert(field);
+                event.stopPropagation();
+                alert("jgh");
                 console.log(field);
                 var value = $(this).val();
                 if (!$(this).val()) {  
@@ -176,8 +173,8 @@
                        
                     };
                 });
-            });
-        
+           
+        });
     </script>
 
 }
