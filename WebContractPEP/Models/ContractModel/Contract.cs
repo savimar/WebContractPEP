@@ -9,8 +9,10 @@ using WebContractPEP.Models.ClientModel.PersonModel;
 
 namespace WebContractPEP.Models
 {
+    [Serializable] 
     public class Contract
     {
+       
         [AllowHtml]
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public long ContractId { get; set; }
@@ -27,8 +29,9 @@ namespace WebContractPEP.Models
         public byte[] ContractData { get; set; } //готовый в pdf с подписями
         //public virtual ICollection<Client> Concluding { get; set; } = new List<Client>(); //кто заключил договор
         public virtual Person ClientPerson { get; set; } //подписант физик
-        public virtual UL Executor { get; set; }//подписант юрик
-        public string ContractTexts { get; set; }
+        public virtual IP IP { get; set; }//подписант ИП
+        public virtual Company Company { get; set; }//подписант ЮЛ
+        public string ContractText { get; set; }
         public bool IsSigned { get; set; } = false;
     }
 }

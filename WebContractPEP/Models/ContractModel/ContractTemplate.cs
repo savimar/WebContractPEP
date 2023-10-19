@@ -15,7 +15,8 @@ namespace WebContractPEP.Models
         public long ContractTemplateId { get; set; }
         public bool IsActive { get; set; } = true;
         public string Name { get; set; }
-        public virtual UL Client { get; set; }
+        public virtual IP IP { get; set; }//подписант ИП
+        public virtual Company Company { get; set; }//подписант ЮЛ
         public string FinalText { get; set; }
         public virtual ICollection<FillField> Fields { get; set; } =
             new List<FillField>(); //список полей шаблона

@@ -6,7 +6,7 @@
 
 <main>
     <section class="row" aria-labelledby="aspnetTitle">
-        <h3>Загрузить договор договора</h3>
+        <h3>Загрузить шаблон договора</h3>
     </section>
 
     <div class="row">
@@ -23,23 +23,5 @@
 
         </section>
     </div>
-    @if (Model != null)
-    {
-        foreach (var item in Model)
-        {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.IsActive)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Name)
-                </td>
-                <td>
-                    @Html.ActionLink("Edit", "Edit", new { id = item.ContractTemplateId }) |
-                    @Html.ActionLink("Details", "Details", new { id = item.ContractTemplateId }) |
-                    @Html.ActionLink("Delete", "Delete", new { id = item.ContractTemplateId })
-                </td>
-            </tr>
-        }
-    }
+    
 </main>

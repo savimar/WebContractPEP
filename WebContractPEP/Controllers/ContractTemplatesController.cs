@@ -23,6 +23,7 @@ using WebContractPEP.Models.ClientModel;
 using Antlr.Runtime.Misc;
 using DocumentFormat.OpenXml.Office2010.Excel;
 using WebContractPEP.Models.ClientModel.CompanyModel;
+using WebContractPEP.Models.DTO;
 
 
 namespace WebContractPEP.Controllers
@@ -111,13 +112,38 @@ namespace WebContractPEP.Controllers
                 }
                 return RedirectToAction("Index");
             }
-            else if (action == "delete")
+            else if (action == "createContract")
             {
-                return View(contractTemplate); //ToDo обработать создание ссылки для физика
+                Contract contract = new Contract();
+
+                if (contractTemplate.IP != null)
+                {
+                    contract.IP = contractTemplate.IP;
+                }
+                else
+                {
+                    contract.Company=contractTemplate.Company;
+                }
+
+                contract.ContractText = contractTemplate.FinalText;
+                contract.Name = contractTemplate.Name;
+                contract.IsSigned = false;
+                contract.ContractDate = DateTime.Today;
+                    //DateTime.Parse(contractTemplate.Fields.FirstOrDefault(c => c.AutoFillFieldType == AutoFillFieldType.ContractDate)?.AutoFieldValue);
+                    contract.ContractNumber = "5";
+                    //contractTemplate.Fields.FirstOrDefault(c => c.AutoFillFieldType == AutoFillFieldType.ContractNumber)?.AutoFieldValue;
+                contract.IsActive = true;
+
+
+                db.Contracts.Add(contract);
+                db.SaveChanges();
+
+                var contractToHtml = new ContractsApiController().GetContract(contract.ContractId);
+                return View(contractToHtml);
             }
 
 
-            return View(contractTemplate); //ToDo 
+            return View("Index"); //ToDo 
         }
 
         // GET: ContractTemplates/Delete/5
@@ -234,7 +260,7 @@ namespace WebContractPEP.Controllers
 
                     new FillField
                     {
-                        ContractTemplate = template, FieldName = "Номер договора",
+                        ContractTemplate = template, FieldName = "Номер договора", IsFilledExecutor = true,
                         FieldType = FieldType.String, IsAutoFillField = false,
 
 
@@ -244,7 +270,7 @@ namespace WebContractPEP.Controllers
 
                     new FillField
                     {
-                        ContractTemplate = template, FieldId = 5, FieldName = "Дата договора",
+                        ContractTemplate = template, FieldId = 5, FieldName = "Дата договора", IsFilledExecutor = true,
                         FieldType = FieldType.Date, AutoFieldValue = DateTime.Now.ToString("dd.MM.yyyy"),
                         IsAutoFillField = false,
 

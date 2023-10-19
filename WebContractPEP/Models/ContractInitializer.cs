@@ -34,7 +34,7 @@ namespace WebContractPEP.Models
             {
                 new Company
                 {
-                    Name = "ООО Тест", INN = "5555555555", KPP = "1111111", ClientType = ClientType.Company,
+                    Name = "ООО Тест", INN = "5555555555", KPP = "1111111",
                     Email = "823@test.ru", Phone = "+79121111111", Id = 2
 
                 },
@@ -48,7 +48,7 @@ namespace WebContractPEP.Models
             
             List<ContractTemplate> templates = new List<ContractTemplate>
             {
-                new ContractTemplate{ Name = "часть1", Client = companies.FirstOrDefault(), FinalText = text},
+                new ContractTemplate{ Name = "часть1", Company = companies.FirstOrDefault(), FinalText = text},
                
             };
             var fields = new List<FillField>
@@ -92,13 +92,13 @@ namespace WebContractPEP.Models
             {
                 new Contract
                 {
-                    ContractNumber = "1", ClientPerson = persons.FirstOrDefault(), Executor = companies.FirstOrDefault(),ContractDate = DateTime.Now,
+                    ContractNumber = "1", ClientPerson = persons.FirstOrDefault(), Company = companies.FirstOrDefault(),ContractDate = DateTime.Now, ContractText = text
                   
                    }
 
             };
             persons.ForEach(p=>db.Persons.Add(p));
-            companies.ForEach(c=>db.CompaniesOrIPs.Add(c));
+            companies.ForEach(c=>db.Companies.Add(c));
             contracts.ForEach(s => db.Contracts.Add(s)); 
             templates.ForEach(t => db.Templates.Add(t));
             fields.ForEach(t => db.Fields.Add(t));

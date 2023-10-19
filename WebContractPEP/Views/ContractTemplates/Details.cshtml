@@ -47,7 +47,8 @@
                 @Html.HiddenFor(model => model.ContractTemplateId)
                 @Html.HiddenFor(m => m.Name)
             @Html.HiddenFor(m => m.Fields)
-            @Html.HiddenFor(m => m.Client)
+            @Html.HiddenFor(m => m.Company)
+                @Html.HiddenFor(m => m.IP)
             <i class="fa fa-link" aria-hidden="true"> </i><a href="http://summernote.org/"></a><hr />
 
 
@@ -62,7 +63,7 @@
                 <button class="btn btn-save" name="action" value="edit" id="btnSave" type="submit">
                     Сохранить шаблон
                 </button>
-                <button class="btn btn-success" id="btnSubmit" type="submit">
+                <button class="btn btn-success" name="action" id="btnSubmit" value="createContract" type="submit">
                     Подписать и отправить
                 </button>
             </div>

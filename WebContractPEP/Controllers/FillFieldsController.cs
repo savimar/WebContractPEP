@@ -102,7 +102,7 @@ namespace WebContractPEP.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            return View(fillField);
+            return View(fillField); //HttpContext.Current.Request.UserHostAddress получить адрес пользователя
         }
 
         // GET: FillFields/Delete/5

@@ -5,6 +5,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using WebContractPEP.Models.ClientModel.CompanyModel;
 
 namespace WebContractPEP.Models.ClientModel
 {
@@ -20,7 +21,8 @@ namespace WebContractPEP.Models.ClientModel
         [Required] public string NumberAccount { get; set; }// счет юридического лица
         public bool BankStatus { get; set; } = true;  //статус счета действющий true/недействующий  false         
         [Required] public string BankId { get; set; } //БИК
-        public virtual Client Client { get; set; }
+        public virtual IP IP { get; set; }// ИП
+        public virtual Company Company { get; set; }//ООО
 
     }
 }
