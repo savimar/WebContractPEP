@@ -9,7 +9,7 @@ using WebContractPEP.Models.ClientModel.PersonModel;
 
 namespace WebContractPEP.Models
 {
-    public class ContractInitializer : DropCreateDatabaseAlways<ContractContext>
+    public class ContractInitializer : DropCreateDatabaseIfModelChanges<ContractContext>
     {
         protected override void Seed(ContractContext db)
         {

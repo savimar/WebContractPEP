@@ -24,7 +24,9 @@ using Antlr.Runtime.Misc;
 using DocumentFormat.OpenXml.Office2010.Excel;
 using WebContractPEP.Models.ClientModel.CompanyModel;
 using WebContractPEP.Models.DTO;
-
+using DocumentFormat.OpenXml.Office2010.Word;
+using DocumentFormat.OpenXml.Spreadsheet;
+using Font = DocumentFormat.OpenXml.Wordprocessing.Font;
 
 namespace WebContractPEP.Controllers
 {
@@ -206,6 +208,7 @@ namespace WebContractPEP.Controllers
                     fileStream.CopyTo(memoryStream);
                     using (var wordDocument = WordprocessingDocument.Open(memoryStream, true))
                     {
+                        wordDocument.ChangeDocumentType(WordprocessingDocumentType.Document); 
 
                         WmlToHtmlConverterSettings settings = new WmlToHtmlConverterSettings()
                         {
@@ -217,6 +220,7 @@ namespace WebContractPEP.Controllers
 
 
                         XElement htmlElement = WmlToHtmlConverter.ConvertToHtml(wordDocument, settings);
+
                         var html = new XDocument(
                             new XDocumentType("html", null, null, null),
                             htmlElement);

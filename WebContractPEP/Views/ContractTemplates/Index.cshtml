@@ -44,9 +44,10 @@
             @Html.DisplayFor(modelItem => item.Name)
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.ContractTemplateId }) |
+            @Html.ActionLink("Редактировать", "Edit", new { id=item.ContractTemplateId }) |
             @Html.ActionLink("Details", "Details", new { id=item.ContractTemplateId }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.ContractTemplateId })
+            @Html.ActionLink("Delete", "Delete", new { id=item.ContractTemplateId })|
+            @Html.ActionLink("Заполнить для подписания", "Details", new { id=item.ContractTemplateId }) |
         </td>
     </tr>
 }

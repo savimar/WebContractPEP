@@ -93,7 +93,7 @@
                         @Html.Label(field.FieldName)
                         @Html.Hidden("FieldName", field.FieldName)
                         @Html.Label(fieldFor) 
-                        @Html.Hidden("FieldIdFor", fieldFor, new { @class = "id_field" + field.FieldId })
+                        @Html.Hidden("FieldIdFor" + field.FieldId, fieldFor, new { @class = "id_field" + field.FieldId })
                         @if (!field.AutoFieldValue.IsNullOrWhiteSpace())
                         {
                             @Html.Label(field.AutoFieldValue)
@@ -156,24 +156,21 @@
       
      
              
-            $('.value_field').on('change', '.value_field', field, function (event) {  
-                event.preventDefault();
-                event.stopPropagation();
-                alert("jgh");
-                console.log(field);
-                var value = $(this).val();
-                if (!$(this).val()) {  
-                    var oldValue = $('#id_field').val();
-                    var eventData = { myData: 'information here' };
-                        eventData = oldvalue.replace(value);
-                        $('#FinalText').summernote(event.data.myData);
-                        console.log(value);
-                        console.log(oldvalue);
-                        console.log(event.data.myData);
-                        alert(field);
-                       
-                    };
+            $('.value_field').on('change', function () {  
+              
+                if ($(this).val() != undefined) {
+                    var value = $(this).val();
+                    var idValue = $(this).attr("id").match(/\d+/)[0];
+                    var oldValue = $(`[name = "${'FieldIdFor' + idValue}"]`).val();
+                 
+                    var summerHTML = document.getElementsByClassName('note-editable')[0].innerHTML;
+                    var newValue = summerHTML.replace(oldValue, '<b>'+value' <b>');
+                    $('#FinalText').summernote('code', newValue);
+                    console.log(newValue);
+                    alert(m);
+                }
                 });
+
            
         });
     </script>
